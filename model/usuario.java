@@ -1,8 +1,6 @@
 package model;
 
 import java.time.LocalDateTime;
-public class usuario {
-
 
 public class Usuario {
 
@@ -12,13 +10,15 @@ public class Usuario {
     private String senha;
     private LocalDateTime ultimoAcesso;
 
+    
     public Usuario() {}
 
-
+   
     public Usuario(String login, String senha) {
         this.login = login;
         this.senha = senha;
     }
+
 
 
     public int getId() { return id; }
@@ -37,5 +37,4 @@ public class Usuario {
     public void setUltimoAcesso(LocalDateTime ultimoAcesso) {
         this.ultimoAcesso = ultimoAcesso;
     }
-}
 }
