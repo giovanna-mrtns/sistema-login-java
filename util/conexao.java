@@ -5,12 +5,11 @@ import java.sql.DriverManager;
 
 public class Conexao {
 
+    private static final String URL     = "jdbc:mysql://localhost:3306/login_cleo?useSSL=false";
+    private static final String USUARIO = "root";
+    private static final String SENHA   = ""; // altere para sua senha
+
     public static Connection conectar() throws Exception {
-String url = "jdbc:mysql://localhost:3306/login_cleo";
-
-        String user = "root";
-
-        String password = ""; // altere a senha!
-
-        return DriverManager.getConnection(url, user, password); 
+        return DriverManager.getConnection(URL, USUARIO, SENHA);
     }
+}

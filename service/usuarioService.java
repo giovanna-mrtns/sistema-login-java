@@ -9,9 +9,11 @@ public class UsuarioService {
 
     public Usuario realizarLogin(String login, String senha) {
 
-        if (login.isEmpty() || senha.isEmpty()) {
+        if (login == null || login.isBlank() || senha == null || senha.isBlank()) {
             return null;
         }
+        login = login.trim();
+        senha = senha.trim();
 
     
         Usuario usuario = dao.autenticar(login, senha);
@@ -26,6 +28,13 @@ public class UsuarioService {
 
     
     public void cadastrarUsuario(String nome, String login, String senha) {
+
+        if (nome == null || nome.isBlank() ||
+            login == null || login.isBlank() ||
+            senha == null || senha.isBlank()) {
+            System.out.println("Erro: nome, login e senha são obrigatórios.");
+            return;
+        }
 
         Usuario usuario = new Usuario();
         usuario.setNome(nome);

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.*;
+import java.sql.Timestamp;
 import model.Usuario;
 import util.Conexao;
 
@@ -12,36 +13,39 @@ public class UsuarioDAO {
 
         try (
             Connection conn = Conexao.conectar();
-
             PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
 
             stmt.setString(1, login);
             stmt.setString(2, senha);
 
-            ResultSet rs = stmt.executeQuery();
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Usuario u = new Usuario();
+                    u.setId(rs.getInt("id_usuario"));
+                    u.setNome(rs.getString("nome"));
+                    u.setLogin(rs.getString("login"));
 
-            if (rs.next()) {
+                    Timestamp ts = rs.getTimestamp("ultimo_acesso");
+                    if (ts != null) {
+                        u.setUltimoAcesso(ts.toLocalDateTime());
+                    }
 
-                Usuario u = new Usuario();
-                u.setId(rs.getInt("id"));
-                u.setNome(rs.getString("nome"));
-                u.setLogin(rs.getString("login"));
-
-                return u; 
+                    return u;
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null; 
+        return null;
     }
 
 
     public void atualizarUltimoAcesso(int id) {
 
-        String sql = "UPDATE usuario SET ultimo_acesso = NOW() WHERE id = ?";
+        String sql = "UPDATE usuario SET ultimo_acesso = NOW() WHERE id_usuario = ?";
 
         try (
             Connection conn = Conexao.conectar();
@@ -78,7 +82,7 @@ public class UsuarioDAO {
 
     public boolean alterarSenha(int id, String senhaAntiga, String senhaNova) {
 
-        String sql = "UPDATE usuario SET senha = ? WHERE id = ? AND senha = ?";
+        String sql = "UPDATE usuario SET senha = ? WHERE id_usuario = ? AND senha = ?";
 
         try (
             Connection conn = Conexao.conectar();
